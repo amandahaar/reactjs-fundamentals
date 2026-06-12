@@ -3,15 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Rubik&display=swap" rel="stylesheet"/>
+
     <title>React.js - Fundamentos</title>
 
 
     <style type="text/tailwindcss">
         @theme {
-            --text: #EBEBEB
-            --text-secondary: #6B6B6B
-            --primary: #462878
-            --background: #2D2A37
+            --text: #EBEBEB;
+            --text-secondary: #6B6B6B;
+            --primary: #462878;
+            --background: #2D2A37;
 
             --gradient: 180deg, 
                 rgba(0, 0, 0, 0.05) 0%, 
@@ -33,7 +38,7 @@
     </style>
 </head>
 
-<body>
+<body className="text-(--text) font-(--font-sans)">
     <div id="root"></div>
 
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
@@ -42,6 +47,25 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <script type="text/babel">
+
+        const textVariants = {
+            default: 'text-xl',
+            muted: 'text-xl text-(--text-secondary)',
+            heading: 'text-2xl',
+            blast: 'text-3xl',
+        }
+
+        function Text({ as= 'span', variant= 'default', className, children, ...props }) {
+            return React.createElement(
+                as,
+                {
+                  className: `${textVariants[variant]} ${className}`,
+                  ...props,  
+                },
+                children
+            )
+        }
+
         function App() {
             return (
                 <main className="py-28 px-4">
