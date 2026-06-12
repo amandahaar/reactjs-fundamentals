@@ -10,7 +10,7 @@
 
     <title>React.js - Fundamentos</title>
 
-
+<!-- Tailwind CSS Theme -->
     <style type="text/tailwindcss">
         @theme {
             --text: #EBEBEB;
@@ -22,18 +22,18 @@
                 rgba(0, 0, 0, 0.05) 0%, 
                 rgba(255, 255, 255, 0.05) 100%;
 
-            -- gradient-hover: 180deg, 
+            --gradient-hover: 180deg, 
                 rgba(0, 0, 0, 0.1) 0%, 
                 rgba(255, 255, 255, 0.1) 100%;
             
-            -- shadow: 0px 11px 7px 0px(0, 0, 0, 0.01), 
-                0px 7px 7px 0px(0, 0, 0, 0.04), 
-                0px 4px 6px 0px(0, 0, 0, 0.10), 
-                0px 2px 4px 0px(0, 0, 0, 0.26), 
-                0px 0px 2px 0px(0, 0, 0, 0.29), 
-                0px 2px 3px 0px(255, 255, 255, 0.06) inset;
+            --shadow: 0px 11px 7px 0px rgba(0, 0, 0, 0.01), 
+                0px 7px 7px 0px rgba(0, 0, 0, 0.04), 
+                0px 4px 6px 0px rgba(0, 0, 0, 0.10), 
+                0px 2px 4px 0px rgba(0, 0, 0, 0.26), 
+                0px 0px 2px 0px rgba(0, 0, 0, 0.29), 
+                0px 2px 3px 0px rgba(255, 255, 255, 0.06) inset;
             
-            -- font-sans: 'Rubik', sans-serif;
+            --font-sans: 'Rubik', sans-serif;
         }
     </style>
 </head>
@@ -46,6 +46,7 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
+    <!--Component Text-->
     <script type="text/babel">
 
         const textVariants = {
@@ -55,20 +56,58 @@
             blast: 'text-3xl',
         }
 
+        /* O componente Text é um componente de texto genérico que pode ser usado para r
+            enderizar diferentes tipos de texto, como parágrafos, títulos, etc. Ele recebe as seguintes props:
+         * - as: o elemento HTML a ser renderizado (padrão: span)
+         * - variant: a variante de estilo do texto (padrão: default)
+         * - className: classes adicionais para estilização
+         * - children: o conteúdo do texto
+         * - ...props: outras props que podem ser passadas para o elemento HTML renderizado*/
         function Text({ as= 'span', variant= 'default', className, children, ...props }) {
             return React.createElement(
                 as,
                 {
-                  className: `${textVariants[variant]} ${className}`,
+                  className: `${textVariants[variant]} ${className ? className : ''}`,
                   ...props,  
                 },
                 children
             )
         }
 
+
+        const buttonVariants = {
+            default: 'bg-(--background)',
+            primary: 'bg-(--primary)',
+        }
+
+        /* O componente Button é um componente de botão que utiliza o componente Text para renderizar o texto do botão. 
+            Ele recebe as seguintes props: children: o conteúdo do botão */
+        function Button({variant= 'default', className, children, ...props}) {
+            return (
+                <Text
+                    as="button"
+                    variant="heading"
+                    className={`
+                        flex items-center justify-center rounded-xl
+                        p-3 cursor-pointer text-(--text)
+                        bg-linear-(--gradient)
+                        hover:bg-linear-(--gradient-hover)
+                        shadow-(--shadow)
+                        
+                        ${buttonVariants[variant]}
+                        ${className ? className : ''}
+                    `}
+                    {...props}
+                >
+                    {children}
+                </Text>
+            )
+        }
+
         function App() {
             return (
                 <main className="py-28 px-4">
+                    <Button>CE</Button>
                 </main>
             )
         }
