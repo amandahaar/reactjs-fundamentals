@@ -38,7 +38,7 @@
     </style>
 </head>
 
-<body className="text-(--text) font-(--font-sans)">
+<body class="text-(--text) font-(--font-sans)">
     <div id="root"></div>
 
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
@@ -55,6 +55,12 @@
             heading: 'text-2xl',
             blast: 'text-3xl',
         }
+        /*Variantes de texto:
+        - Default: texto normal, padrão
+        -  Muted: texto mais discreto, com menos destaue (geralmente em cinza)
+        - Heading: título ou cabeçalho, maior e mais destacado
+        - Blast: texto com muito destaque, impacto visual forte, geralmente usado para 
+        números ou informações importantes (nome menos padronizado)*/
 
         /* O componente Text é um componente de texto genérico que pode ser usado para r
             enderizar diferentes tipos de texto, como parágrafos, títulos, etc. Ele recebe as seguintes props:
@@ -82,7 +88,7 @@
 
         /* O componente Button é um componente de botão que utiliza o componente Text para renderizar o texto do botão. 
             Ele recebe as seguintes props: children: o conteúdo do botão */
-        function Button({variant= 'default', className, children, ...props}) {
+        function Button({ variant= 'default', className, children, ...props }) {
             return (
                 <Text
                     as="button"
@@ -104,10 +110,95 @@
             )
         }
 
+        function Card ({ children, className, ...props }){
+            return (
+                <div className={`
+                    bg-(--background) shadow-(--shadow)
+                    rounded-2xl
+                    ${className ? className : ''}
+                `}>
+                    {children}                    
+                </div>
+            )
+
+        }
+
+        function CalculatorDisplay({ operation, result }) {
+            return (
+                    <div className={`
+                        flex flex-col gap-2 px-[1.375rem]
+                        cursor-default select-none
+                    `}>
+                        <Text 
+                            as="div" 
+                            variant="muted"
+                            className="flex items-center justify-end"
+                        >
+                            {operation}
+                        </Text>
+                        <div className={`
+                          flex items-center justify-between
+                        `}>                      
+                            <Text variant="muted">
+                                =
+                            </Text>
+                             <Text variant="blast">
+                                {result}
+                            </Text>  
+                        </div>
+                    </div>
+            )
+        }
+
+        function Calculator() {
+            return (
+                <Card className={`
+                    flex flex-col gap-[1.625rem] w-[22.25rem]
+                    pt-14 px-8 pb-8
+                `}
+                >
+                    <CalculatorDisplay operation="1 + 1" result="2" />
+
+                    <div className="flex flex-col gap-3">
+                        <div className="flex gap-3">
+                            <Button className="w-16 h-16">CE</Button>
+                            <Button className="w-35 h-16">C</Button>
+                            <Button className="w-16 h-16 bg-(--primary)">÷</Button>
+                        </div>
+                        <div className="flex gap-3">
+                            <Button className="w-16 h-16">7</Button>
+                            <Button className="w-16 h-16">8</Button>
+                            <Button className="w-16 h-16">9</Button>
+                            <Button className="w-16 h-16 bg-(--primary)">×</Button>
+                        </div>
+                        <div className="flex gap-3">
+                            <Button className="w-16 h-16">4</Button>
+                            <Button className="w-16 h-16">5</Button>
+                            <Button className="w-16 h-16">6</Button>
+                            <Button className="w-16 h-16 bg-(--primary)">−</Button>
+                        </div>
+                        <div className="flex gap-3">
+                            <Button className="w-16 h-16">1</Button>
+                            <Button className="w-16 h-16">2</Button>
+                            <Button className="w-16 h-16">3</Button>
+                            <Button className="w-16 h-16 bg-(--primary)">+</Button>
+                        </div>
+                        <div className="flex gap-3">
+                            <Button className="flex-1 h-16">0</Button>
+                            <Button className="w-16 h-16">,</Button>
+                            <Button className="w-16 h-16 bg-(--primary)">=</Button>
+                        </div> 
+
+                    </div>
+
+                </Card>
+            )
+        }
+
         function App() {
             return (
                 <main className="py-28 px-4">
-                    <Button>CE</Button>
+                    <Calculator />
                 </main>
             )
         }
