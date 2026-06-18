@@ -15,7 +15,7 @@
     <script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
 
     <script type="text/babel">
-
+    /*____________________________________________________________________________________________________*/
         function Alert1() {
         /*Componente React chamado "Alert1"*/
             function handleAlertClick(event) {
@@ -23,7 +23,6 @@
                 alert('Uma mensagem de alerta!');
             }
             /*Essa função mostra apenas uma janela aberta; Quando ela for executada, aparecerá: "Uma mensagem de alerta!"*/
-  
             return (
                 <button type="button" onClick={handleAlertClick}>
                     Mostrar Alerta
@@ -31,12 +30,12 @@
             ) 
             /*O return é o que vai aparecer na tela; "Quando clicar neste botão, execute a função handleAlertClick"*/
         }
+    /*____________________________________________________________________________________________________*/
 
         function Alert2() {
             function handleAlertClick(msg) {
                 alert(msg);
             }
-
             return (
                 <button onClick={() => handleAlertClick('Uma mensagem de alerta!')}>
                     Mostrar Alerta com Parâmetro
@@ -44,8 +43,27 @@
             )
             /*Componente dinâmico*/
         }
+    /*____________________________________________________________________________________________________*/
 
-
+        function Alert3() {
+            function handleAlertCliclk(event) {
+                alert(event.target.previousSibling.value);
+            }
+            function handleInputChange(event) {
+                console.log(event.target.value);
+            }
+            return (
+                <div>
+                    <input type="text" 
+                    placeholder="Digite algo..."
+                    onChange={handleInputChange}
+                    ></input>
+                    <button onClick={handleAlertCliclk}>
+                        Mostrar Alerta do Campo de Texto
+                    </button>
+                </div>
+            )
+        }
 
 
 
@@ -55,9 +73,11 @@
                 <main>
                     <Alert1 />
                     <Alert2 />
+                    <Alert3 />
                 </main>
             )
         }
+    /*____________________________________________________________________________________________________*/
 
         ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
         /*React para web*/
