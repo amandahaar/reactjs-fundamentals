@@ -181,17 +181,48 @@
             const [result, setResult] = React.useState('');
             
             function handleInputClick(input) {
-                if (input === "=") {
-                    const operationResult = eval(operation);
-                    setResult(operationResult);
+
+                if (input === "C") {
+                    setOperation("");
+                    setResult("");
                     return;
                 }
 
-                if (input === "," && !operation.endsWith(',')) {
-                    
+                if (input === "CE") {
+                    setOperation(operation.slice(0, -2));
+                    setResult("");
+                    return;
                 }
 
-                setOperation(`${operation} ${input}`);          
+                if (result) {
+                    
+                    setOperation(isNaN(input)
+                        ? `${result}${input === "," ? "" : " "}${input}`
+                        : input)
+                    setResult("");
+                    return;
+                }
+
+                {/*todos que tem "," transforma em "."
+                toda string que for "." transforma em ","*/}
+                if (input === "=") {
+                    const operationResult = eval(operation.replace(/,/g, '.'));
+                    const parsedResult = operationResult.toString()?.replace(/\./g, ',');
+                    setResult(parsedResult);
+                    return;
+                }
+                
+                {/*Operação NÃO termina com ","*/}
+                if (input === "," && !operation.endsWith(',')) {
+                    setOperation(`${operation},`);
+                    return;
+                }
+                
+                {/*Operação termina com "," - não coloco espaço (1,1); 
+                Operação não termina com "," - coloco espaço (1 )*/}
+                setOperation(
+                    `${operation}${operation.endsWith(',') ? "" : " "}${input}`
+                );          
             }
 
             return (
