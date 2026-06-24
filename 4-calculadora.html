@@ -156,52 +156,77 @@
                         <Text 
                             as="div" 
                             variant="muted"
-                            className="flex items-center justify-end"
+                            className="flex items-center justify-end h-7"
                         >
-                            {operation}
+                            {result && operation}
                         </Text>
                         <div className={`
-                          flex items-center justify-between
+                          flex items-center justify-between h-9
                         `}>                      
                             <Text variant="muted">
                                 =
                             </Text>
                              <Text variant="blast">
-                                {result}
+                                {result || operation}
                             </Text>  
                         </div>
                     </div>
             )
         }
 
+        {/*Mapeamento da lista*/}
         function Calculator() {
+
+            const [operation, setOperation] = React.useState('');
+            const [result, setResult] = React.useState('');
+            
+            function handleInputClick(input) {
+                if (input === "=") {
+                    const operationResult = eval(operation);
+                    setResult(operationResult);
+                    return;
+                }
+
+                if (input === "," && !operation.endsWith(',')) {
+                    
+                }
+
+                setOperation(`${operation} ${input}`);          
+            }
+
             return (
-                <Card className={`
+                <Card 
+                    className={`
                     flex flex-col gap-[1.625rem] w-[22.25rem]
                     pt-14 px-8 pb-8
-                `}>
+                    `}>
                     
-                    <CalculatorDisplay operation="1 + 1" result="2" />
-                    
+                    <CalculatorDisplay 
+                        operation={operation} 
+                        result={result}  
+                    />
+                                                           
                     <div className="flex flex-col gap-3">
-                       {/*Primeiro map: linha*/}
+                        
+                        {/*Primeiro mapeamento: linha (row)*/}
                         {buttons.map((row, index) => (
                             <div key={`row-${index}`} className="flex gap-3">
                                 
-                                {/*Segundoo map: coluna*/}
+                                {/*Segundo mapeamento: coluna*/}
                                 {row.map(button => (
                                     <Button 
                                         key={button.input} 
                                         className={button.className || "w-16 h-16"}
-                                        variant={button.variant}>
-                                            {button.input}
+                                        variant={button.variant}
+                                        onClick={() => handleInputClick (button.input)}
+                                        >
+                                        
+                                        {button.input}
                                     </Button>
                                 ))}
                             </div>
                         ))}
-                        
-                        
-
+                                         
                     </div>
                 
                 </Card>
