@@ -189,7 +189,7 @@
                 }
 
                 if (input === "CE") {
-                    setOperation(operation.slice(0, -2));
+                    setOperation(operation.slice(0, -1));
                     setResult("");
                     return;
                 }
@@ -197,7 +197,7 @@
                 if (result) {
                     
                     setOperation(isNaN(input)
-                        ? `${result}${input === "," ? "" : " "}${input}`
+                        ? `${result}${input}`
                         : input)
                     setResult("");
                     return;
@@ -221,7 +221,7 @@
                 {/*Operação termina com "," - não coloco espaço (1,1); 
                 Operação não termina com "," - coloco espaço (1 )*/}
                 setOperation(
-                    `${operation}${operation.endsWith(',') ? "" : " "}${input}`
+                    `${operation}${input}`
                 );          
             }
 
