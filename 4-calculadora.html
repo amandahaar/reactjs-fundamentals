@@ -151,9 +151,28 @@
         const CalculatorContext = React.createContext(); {/*Criação do contexto*/}
         function CalculatorProvider({ children }) { {/*Criação do provedor*/}
             const [history, setHistory] = React.useState([]);
+            const historyStorageKey = 'history';
+
+            React.useEffect(() => {
+                const savedHistory = localStorage.getItem(historyStorageKey);
+                setHistory(JSON.parse(savedHistory || '[]'))
+            }, []);
 
             function updateHistory(operation, parsedResult) {
-                setHistory((prev) => [...prev, `${operation}=${parsedResult}`])
+                setHistory((prev) => {
+                    const updatedHistory = [
+                        ...prev, 
+                        `${operation}=${parsedResult}`
+                    ];
+                    
+                    localStorage.setItem(
+                        historyStorageKey, 
+                        JSON.stringify(updatedHistory)
+                    )
+                    return updatedHistory;
+
+                })
+                
             }
         
             return (
@@ -165,10 +184,6 @@
             )
 
         }
-
-
-
-
 
         function CalculatorDisplay({ operation, result }) {
             return (
@@ -219,7 +234,6 @@
                 }
 
                 if (result) {
-                    
                     setOperation(isNaN(input)
                         ? `${result}${input}`
                         : input)
@@ -230,7 +244,13 @@
                 {/*todos que tem "," transforma em "."
                 toda string que for "." transforma em ","*/}
                 if (input === "=") {
-                    const operationResult = eval(operation.replace(/,/g, '.'));
+                    const normalizedOperation = operation
+                        .replace(/,/g, '.')
+                        .replace(/÷/g, '/')
+                        .replace(/×/g, '*')
+                        .replace(/−/g, '-');
+
+                    const operationResult = eval(normalizedOperation);
                     const parsedResult = operationResult.toString()?.replace(/\./g, ',');
                     setResult(parsedResult);
                     updateHistory(operation, parsedResult);
